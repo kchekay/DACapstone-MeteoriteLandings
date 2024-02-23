@@ -248,5 +248,141 @@ ggplot(Top_10_Years, aes(x=fct_inorder(as.character(Year)), y=Count, fill=Count)
   theme(text = element_text(family="Bahnschrift")) +
   theme(legend.position = "none")
 ```
+Image: [Bar Graph: Top 10 Years with most Landings](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/Result_MostLandings_Year.png)
+
+Result: the year 2003 had the most meteorites with 3,323 recorded landings.
+
+
+**How many classifications are there in the dataset?**
+```
+# How many classifications are there in the dataset?
+length(unique(MeteoriteLandings_Cleaned$classification))
+
+[1] 455
+```
+
+455 classifications total in the dataset.
+
+**What are the few most common classifications of meteorites?**
+```
+# What are the few most common classifications of meteorites?
+
+common_class <- MeteoriteLandings_Cleaned %>%
+  count(classification, sort=TRUE)
+
+head(common_class)
+
+# A tibble: 6 × 2
+  classification     n
+  <chr>          <int>
+1 L6              8339
+2 H5              7164
+3 L5              4817
+4 H6              4529
+5 H4              4222
+6 LL5             2766
+
+# making a separate table to create a line graph using head(common_class) results
+
+cc_df <-
+  tibble::tribble(
+    ~class, ~count,
+    "L6", 8339,
+    "H5", 7164,
+    "L5", 4817,
+    "H6", 4529,
+    "H4", 4222,
+    "LL5", 2766
+  )
+
+# line graph with the created table = cc_df
+
+ggplot(cc_df, aes(x=fct_inorder(class), y=count, group=1)) +
+  geom_line(size=1.5, color="deepskyblue3") +
+  scale_y_continuous(n.breaks=8) +
+  geom_text(aes(label=count), vjust=-0.5, hjust=-.2, size=3) +
+  labs(title="Most Common Meteorite Classifications",
+       subtitle="Based on the count data for Classifications",
+       x="Meteorite Classifications", y="") +
+  theme(text = element_text(family="Bahnschrift")) +
+  theme(legend.position = "none") +
+  theme_minimal()
+```
+
+Image: [Line Graph: Most Common Classification](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/Result_ClassificationCount.png)
+
+Result: The most common classification of meteorite would be L6 with 8,339 recordings.
+*L6 is a classification of a ordinary chondrite (a stony/non-metallic, unmodified meteorite) with low-iron, altered by thermal metamorphism (transformation of existing rock to another with different mineral composition or texture), with no melting.*
+
+### Geolocations & Time
+
+**What region and country had the most recorded landings?**
+```
+# Map View of the meteorite locations, using latitude and longitude.
+# Remove any missing values in latitude and longitude first
+
+Removed_Coords <- MeteoriteLandings_Cleaned %>%
+  drop_na(latitude, longitude)
+
+Locations <- sf::st_as_sf(
+  Removed_Coords,
+  coords = c("longitude", "latitude"),
+  crs = 4326 # lat/long coordinate reference system
+)
+
+mapview::mapview(Locations)
+```
+
+Image: [Mapview: Recorded Landings](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/Result_MapviewLandings.png)
+Image: [Tableau: Recorded Landings - Heatmap](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/Result_TableauLandings_Heatmap.PNG)
+
+Result: North America and Africa seem to have the highest cluster of recorded landings, following behind Australia, and the country of Oman and along with portions of Antarctica.
+
+Many of the high-dense clusters share the same year, and almost the same classification, meaning all the found individual meteorites could have been one singular meteor, or a cluster during their fall.
+
+
+**Was there any significant spikes when it came to recorded findings?**
+
+```
+# Is there any significant spike in findings during any point?
+
+year_count <- summary(factor(MeteoriteLandings_Cleaned$year))
+print(year_count)
+
+> print(year_count)
+   2003    1979    1998    2006    1988    2002    2004    2000    1997    1999    2001    1990    2009    1986    2007 
+   3323    3046    2697    2456    2296    2078    1940    1792    1696    1691    1650    1518    1497    1375    1189 
+   2010    1993    2008    1987    1991    2005    1994    2011    1974    1996    1995    1981    1977    1984    1985 
+   1006     979     957     916     877     875     719     713     691     583     487     463     421     402     378 
+   1992    1983    1982    1975    1978    2012    1980    1989    1969    1937    1968    1976    1965    1971    1970 
+    372     360     344     337     262     234     152     136      70      54      54      52      50      49      48 
+   1938    1950    1940    1967    1962    1936    1963    1964    1939    1972    1973    1933    1960    1934    1956 
+     45      40      37      37      36      35      34      33      32      32      31      30      30      27      27 
+   1961    1966    1932    1955    1941    1949    1903    1931    1954    1887    1890    1910    1916    1930    1942 
+     27      26      25      24      23      23      22      22      22      21      20      20      20      20      20 
+   1944    1948    1951    1917    1935    1947    1914    1921    1924    1925    1952    1957    1958    1898    1900 
+     20      20      20      19      19      19      18      18      18      18      18      18      18      17      17 
+   1868    1907    1923    1927    1928    1959    1863    1880 (Other)    NA's 
+     16      16      16      16      16      16      15      15     896     291
+```
+
+There was a large spike that happened during 1969 and 1989, jumping the count from 70 to 136.\
+Shortly after, there was a steady rise in findings during the 90s and 2000s.
+
+# Tableau Dashboard
+
+To use the Interactive Dashboard, please visit my [Tableau](https://public.tableau.com/app/profile/katie.chekay/viz/NASAMetorites/MeteoriteDashboard) link.
+
+# Conclusions
+
++ The weight of meteorites recorded are between 0.010 grams and 60,000,000 grams. The Hoba meteorite being the heaviest, and both LaPaz Icefield 04531 and Yamato 8333 being the lightest ever recorded. 
++ There was a large spike of meteorites being found more after 1974, with 2003 being the most with a count of 3,323 meteorites.
++ There are 455 different types of meteorite classifications in the dataset, and 18.25% of them being L6, a stony low-iron class, the most common classification. 
++ Looking at the mapview results and the point map, there are multiple areas in various regions that have high dense clusters during the same time period they were found, it is possible the meteorites were once a singular large meteor that shattered on impact, or multiple that fell together. 
++ Other dense clusters had multiple years, but did not match the same classifications, indicating there is a possibility that they were not one as a whole when the meteorite landed.
+
+# Recommendations
+
++ Despite the geographic latitude and longitude, having an additional column of the nearest address, city, and country to the individual meteor findings, would allow a more in-depth research to see if there is any correlation between the high-dense clusters of landings and their classifications to see if they were once a singular meteorite, or fell as multiple.
 
 
