@@ -31,6 +31,15 @@ These are all key questions that can be looked into once the data is clean.
 
 Clean and prepare the data. Dive into statistical analysis and see if there are questions that can be answered and discovered. Visualize the data with the findings.
 
+# Table of Contents
+1. [About the Dataset](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/DOCUMENT.md#about-the-dataset)
+2. [Cleaning Process](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/DOCUMENT.md#cleaning-process)
+3. [Data Prep in R](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/DOCUMENT.md#preparing-the-data)
+4. [The Answered Questions](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/DOCUMENT.md#questions)
+5. [Tableau Dashboard](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/DOCUMENT.md#tableau-dashboard)
+6. [Conclusion Summary](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/DOCUMENT.md#conclusions)
+7. [Dataset Recommendations](https://github.com/kchekay/DACapstone-MeteoriteLandings/blob/main/DOCUMENT.md#recommendations)
+   
 # About the Dataset
 
 The dataset was pulled off of NASA’s Open Data Portal, containing comprehensive data from The Meteoritical Society, containing information on all known meteorite landings. The dataset consists of over 45,000 known meteorite landings between 860 and 2013 with the following columns:
