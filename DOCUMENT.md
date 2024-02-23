@@ -110,7 +110,7 @@ Once the data is clean and free of duplicates, I pulled it into R (RStudio) to b
 
 # Preparing the Data
 
-R: Visualization
+### R: Visualization
 
 Install necessary packages and load them into the library.
 
